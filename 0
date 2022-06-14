@@ -1,1 +1,30 @@
+-----Python包的功能分类-----
+科学计算：Numpy Matplotlib Seaborn
+数据挖掘&机器学习：Pandas scikit-learn
+网页爬虫：Scrapy
+文本处理：NLTK Pattern
 
+
+
+
+-----EXAMPLE-----
+import 【包名称】 as 【更名称】
+import warnings
+warnings.filterwarnings('ignore')
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+#导入csv文件#
+赋值新表名 = 包名.read_csv('文件名', encoding='gb2312')
+#查看数据样貌#
+表名.head(查看的行数)
+
+#删除列#
+赋值新表名 = 表名.drop('需删除列的名称', axis=1) #axis=0 行
+#新增计算列#
+表名 [ 新增列名 ] = 表名 ['lowest_price'] / 表名 ['new_price']
+#筛选（保留）残值率<1的数据#
+赋值新表名 = 表名 [ 表名 [ '残值率' ] < 1 ]
