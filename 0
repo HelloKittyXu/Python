@@ -11,10 +11,10 @@
 import 【包名称】 as 【更名称】
 import warnings
 warnings.filterwarnings('ignore')
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+import pandas as pd #函数
+import numpy as np #数组
+import matplotlib.pyplot as plt #2D绘画
+import seaborn as sns #热力图
 
 
 #导入csv文件#
@@ -23,7 +23,7 @@ import seaborn as sns
 表名.head(查看的行数)
 
 #删除列#
-赋值新表名 = 表名.drop('需删除列的名称', axis=1) #axis=0 行
+赋值新表名 = 表名.drop('需删除列的名称', axis=1) #axis=0 删除行 
 #新增计算列#
 表名 [ 新增列名 ] = 表名 ['lowest_price'] / 表名 ['new_price']
 #筛选（保留）残值率<1的数据#
