@@ -28,3 +28,13 @@ import seaborn as sns #热力图
 表名 [ 新增列名 ] = 表名 ['lowest_price'] / 表名 ['new_price']
 #筛选（保留）残值率<1的数据#
 赋值新表名 = 表名 [ 表名 [ '残值率' ] < 1 ]
+
+#筛选#
+赋值新表名 = 表名 [ 表名 ['字段名1'] == 条件 ]
+
+#分组聚合#
+赋值新表名 = 表名.groupby('分组字段') ['求均值字段'].mean(). reset_index()
+
+#排序函数#
+赋值新表名 = 表名.sort_values('排序字段', 排序方法） #升序和降序 ascending = False 降序；ascending = True 升序（注意区分 False 和 True 首字母大小写）
+
