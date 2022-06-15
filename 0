@@ -65,9 +65,10 @@ plt.show()
 赋值新表名 = 表名 [ 表名 ['brand'] . isin([ '品牌名称1', '品牌名称2' ])
 赋值新表名 = sns.boxplot ( x='字段名' , y='字段名' , data=表名 )
 
-#person相关性系数
+#pearson相关系数矩阵
 赋值新表名 = 表名. corr( )
 
-#画热力图
-赋值新表名 = sns.heatmap(表名, square = True 判断形状, vmax = 1 颜色取值)
-包名.title ( '自定义标题名' )
+#画相关系数热力图
+绘图：
+赋值新表名 = sns.heatmap ( 表名, square = True(形状判断), vmax = 1(颜色取值) ) #square 是否方形; vmax max取值
+
