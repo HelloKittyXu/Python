@@ -17,24 +17,41 @@ import matplotlib.pyplot as plt #2D绘画
 import seaborn as sns #热力图
 
 
-#导入csv文件#
+#导入csv文件
 赋值新表名 = 包名.read_csv('文件名', encoding='gb2312')
 #查看数据样貌#
 表名.head(查看的行数)
 
-#删除列#
+#删除列
 赋值新表名 = 表名.drop('需删除列的名称', axis=1) #axis=0 删除行 
-#新增计算列#
+#新增计算列
 表名 [ 新增列名 ] = 表名 ['lowest_price'] / 表名 ['new_price']
-#筛选（保留）残值率<1的数据#
+#筛选（保留）残值率<1的数据
 赋值新表名 = 表名 [ 表名 [ '残值率' ] < 1 ]
 
-#筛选#
+#筛选
 赋值新表名 = 表名 [ 表名 ['字段名1'] == 条件 ]
 
-#分组聚合#
+#分组聚合
 赋值新表名 = 表名.groupby('分组字段') ['求均值字段'].mean(). reset_index()
 
-#排序函数#
+#排序函数
 赋值新表名 = 表名.sort_values('排序字段', 排序方法） #升序和降序 ascending = False 降序；ascending = True 升序（注意区分 False 和 True 首字母大小写）
 
+#数据透视表
+赋值新表名 = pivot_table ( index(行), values(筛选), columns(列), aggfunc(值) )
+Python 和 Numpy 都自带mean函数，numpy的mean()处理大型数据计算速度更快，更适合pandas
+
+#结构重置
+赋值新表名 = 表名. reset_index( )
+
+#画柱状图
+绘图：
+sns.barplot ( x = 表名['字段名1'] , y = 表名['字段名2'] , ci = 68) #ci 配色
+标签：
+plt.rcParams ['字体'] = ['黑体']
+plt.rcParams ['编码'] = FALSE
+标题：
+plt.title ( '自定义标题名' )
+展示：
+plt.show ( )
