@@ -39,19 +39,21 @@ import seaborn as sns #热力图
 赋值新表名 = 表名.sort_values('排序字段', 排序方法） #升序和降序 ascending = False 降序；ascending = True 升序（注意区分 False 和 True 首字母大小写）
 
 #数据透视表
-赋值新表名 = pivot_table ( index(行), values(筛选), columns(列), aggfunc(值) )
+赋值新表名 = pivot_table ( index = [ ](行), columns = [ ](列), values = [ ](值), aggfunc = np.mean(汇总方式) ) #汇总方式默认平均值
 Python 和 Numpy 都自带mean函数，numpy的mean()处理大型数据计算速度更快，更适合pandas
 
-#结构重置
-赋值新表名 = 表名. reset_index( )
+#重置索引
+赋值新表名 = 表名. reset_index( ) #转换dataframe格式，为后续画图做准备
 
 #画柱状图
 绘图：
-sns.barplot ( x = 表名['字段名1'] , y = 表名['字段名2'] , ci = 68) #ci 配色
+sns.barplot ( x = 表名['字段名1'] , y = 表名['字段名2'] , ci = n)
 标签：
 plt.rcParams ['字体'] = ['黑体']
+plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams ['编码'] = FALSE
+plt.rcParams['axes.unicode_minus'] = False
 标题：
 plt.title ( '自定义标题名' )
 展示：
-plt.show ( )
+plt.show()
