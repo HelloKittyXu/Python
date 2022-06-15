@@ -64,3 +64,10 @@ plt.show()
 #筛选
 赋值新表名 = 表名 [ 表名 ['brand'] . isin([ '品牌名称1', '品牌名称2' ])
 赋值新表名 = sns.boxplot ( x='字段名' , y='字段名' , data=表名 )
+
+#person相关性系数
+赋值新表名 = 表名. corr( )
+
+#画热力图
+赋值新表名 = sns.heatmap(表名, square = True 判断形状, vmax = 1 颜色取值)
+包名.title ( '自定义标题名' )
