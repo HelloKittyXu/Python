@@ -44,7 +44,7 @@ df.dropna() --删除，可按指定行/列删除为空的数据
 seaborn.countplot(data = df #数据集, x = 'sex' #分类变量)
 1.2占比——扇形图（pieplot）
 sex_freq = df['sex'].value_counts()
-plt.pie(x = sex_freq #数据集, labels = sex_freq.index #分类标签名称, startangle = 90 #起始角度 90度, autopct = '%l.f%%' #添加占比，设置文本格式)
+plt.pie(x = sex_freq #数据集, labels = sex_freq.index #分类标签名称, startangle = 90 #起始角度 90°, autopct = '%l.f%%' #添加占比，设置文本格式)
 2.连续变量
 2.1统计量
 pd.describe() #返回count mean std min max等统计量
@@ -60,5 +60,68 @@ sns.boxplot(data = df, y = 'Age')
 Q1:下四分位数（25%）
 Q3:上四分位数（75%）
 IQR：四分位距，IQR = Q3 - Q1
+上限 = Q3 + 1.5*IQR
+下限 = Q1 - 1.5*IQR
+如果max <= 上限，则延长上限为最大值，延长下限同理
+#核密度估计图（kdeplot）
+非参数检验方法，用来估计未知的密度函数，可以直观看出数据样本本身分布特征
+sns.kdeplot(df['Age'])
+#distplot
+在直方图的基础上，增加核密度曲线
+sns.distplot(df['Age'], bins = 10)
 3.时间序列
+需要规范时间轴格式
+3.1将时间变量转化为datetime.date格式
+3.2作图
+3.3配置横坐标格式
+
+from datetime import datetime
+import matplotlib.dates as mdates #引用日期格式组件
+#生成横纵坐标信息，调整时间格式
+x = uv_date.date
+y = uv_date.uv
+
+#配置横坐标
+plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
+plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+
+#正常作图
+plt.plot(x, y, #label = '',# linestyle = '-', color = 'orange')
+plt.xticks(rotation = 90) #x轴标签旋转90°
+
+#设置横坐标格式
+plt.xticks(pd.date_range('', '', freq = '5D'))
+
 4.异常值检测
+4.1 3倍标准差：单列检验，数据需服从正态分布
+mean = df[''].mean()
+std = df[''].std()
+upper = mean + 3*std #上限
+lower = mean - 3*std #下限
+
+4.2.1 Kmeans聚类
+Kmeans核心：组内距离小，组间距离大，适用于凸样本
+优点：容易实现，计算高效
+
+#导入kmeans包
+from sklearn.cluster import KMeans
+
+#kmeans聚类
+kmeans = KMeans(n_clusters =  #分组个数, random_state = 0).fit(beijing[['call', 'finish']] #数据源)
+#print(kmeans.labels_)
+
+#分组标签
+beijing['type'] = kmeans.labels_
+
+#绘图观察
+plt.scatter(x = beijing.loc[beijing['type'] == 0].call, y = beijing.loc[beijing['finish'] == 0].finish, c = 'red', marker = 's', label = 'type 0')
+plt.scatter(x = beijing.loc[beijing['type'] == 1].call, y = beijing.loc[beijing['finish'] == 1].finish, c = 'blue', marker = '.', label = 'type 1')
+plt.scatter(x = beijing.loc[beijing['type'] == 2].call, y = beijing.loc[beijing['finish'] == 2].finish, c = 'orange', marker = '.', label = 'type 2')
+plt.scatter(x = beijing.loc[beijing['type'] == 3].call, y = beijing.loc[beijing['finish'] == 3].finish, c = 'green', marker = '.', label = 'type 3')
+plt.legend() #图例
+
+4.2.2 Dbscan聚类
+Dbscan是一种基于密度空间的聚类算法，适用于非凸样本
+优点：识别复杂形状
+dbscan = cluster.DBSCAN(eps = 0.2, min_samples = 5, metric = 'euclidean')
+y_db = dbscan.fit_predict(x)
