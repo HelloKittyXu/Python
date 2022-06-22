@@ -1,0 +1,27 @@
+EDA
+1.What is EDA(Exploratory Data Analysis)？
+EDA是探索数据的过程，通常包括数据结构、组成成分、数据分布、变量间关系。在EDA过程中，最重要的工具是可视化图表。
+
+2.Goals？
+1 验证数据是否正常合理
+2 判断这些数据能否回答研究的问题
+3 对研究的问题给出初步答案
+
+一、探查数据质量和数据类型
+1.查看数据类型
+1.1基础数据结构——数据框（DataFrame）
+#导入pandas
+import pandas as pd
+#读取数据
+df = pd.read_table(' .csv' 文件名, seq=',')
+#取出列数据
+df[['', '', '']]
+#条件索引
+df.loc[df.sex == '']
+( df.loc[df['sex'] == ''] )
+#查看整体数据情况
+df.head()
+df.info() --展示整体状况，多少列、列属性、是否有空值等
+#数据类型转换
+df.astype()
+df['Pclass2'] = df['Pclass'].astype('category')
