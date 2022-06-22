@@ -19,9 +19,46 @@ df[['', '', '']]
 #条件索引
 df.loc[df.sex == '']
 ( df.loc[df['sex'] == ''] )
+1.2基础数据情况
 #查看整体数据情况
 df.head()
 df.info() --展示整体状况，多少列、列属性、是否有空值等
 #数据类型转换
 df.astype()
 df['Pclass2'] = df['Pclass'].astype('category')
+2.查看缺失值及处理
+#判断缺失值
+df.info()
+df.isnull.sum()
+#缺失值处理
+df.fillna(method = '') --填充
+  绝对值填充（0，mean()，中位数），可通过字典对不同列填充不同值
+  method填充（'ffill'，'bfill'），前向填充：空值前面的非空值，后向填充：空值后面的非空值
+  pad/ffill：向前填充，可以简写为df.ffill()
+  bfill/backfill：向后填充，可以简写为df.bfill()
+df.dropna() --删除，可按指定行/列删除为空的数据
+
+二、探查数据基础分布情况
+1.分类变量
+1.1频数——柱状/条形图（barplot）
+seaborn.countplot(data = df #数据集, x = 'sex' #分类变量)
+1.2占比——扇形图（pieplot）
+sex_freq = df['sex'].value_counts()
+plt.pie(x = sex_freq #数据集, labels = sex_freq.index #分类标签名称, startangle = 90 #起始角度 90度, autopct = '%l.f%%' #添加占比，设置文本格式)
+2.连续变量
+2.1统计量
+pd.describe() #返回count mean std min max等统计量
+pd.Series.mean()
+pd.Series.std()
+2.2分布——直方图（histogram）
+df.Series.hist(bins = 10 #分为等距的10桶)
+#条形图 连续变量离散化
+df['Age2'] = pd.cut(x = df.Age #数据源, bins = [0,10,20,40,50,80] #分组区间, labels = ['0~10','10~20','20~40','40~50','50~80'] #分组名称) #根据max min决定分区
+#箱线图（boxplot）
+sns.boxplot(data = df, y = 'Age')
+箱线图识别异常点的原理：
+Q1:下四分位数（25%）
+Q3:上四分位数（75%）
+IQR：四分位距，IQR = Q3 - Q1
+3.时间序列
+4.异常值检测
