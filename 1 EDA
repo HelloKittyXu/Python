@@ -125,3 +125,9 @@ Dbscan是一种基于密度空间的聚类算法，适用于非凸样本
 优点：识别复杂形状
 dbscan = cluster.DBSCAN(eps = 0.2, min_samples = 5, metric = 'euclidean')
 y_db = dbscan.fit_predict(x)
+
+三、探索变量之间的关系
+
+1.分类 x 分类
+2.分类 x 连续
+3.连续 x 连续
