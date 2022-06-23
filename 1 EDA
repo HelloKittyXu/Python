@@ -127,7 +127,31 @@ dbscan = cluster.DBSCAN(eps = 0.2, min_samples = 5, metric = 'euclidean')
 y_db = dbscan.fit_predict(x)
 
 三、探索变量之间的关系
-
 1.分类 x 分类
+1.1 列联表
+#按列分组
+group1 = df.groupby('key1')
+group2 = df.groupby(['key2', 'key2'])
+#聚合函数
+g1.count()
+#基于pivot_table（类似数据透视表）列联表
+pd.pivot_table(df, index = 'key1', columns = 'key2', aggfunc = )
+#基于crosstab
+pd.crosstab(df.sex, df.survived, margins = True)
+1.2 热力图 #多x多
+x = pd.crosstab(df.Type, df.Size)
+sns.heatmap(x, annot = True #显示数据标签, fmt = '.0f' #数据格式, #mask = x.values < 200 覆盖小于200的区域, cmap = 'Blues' #设定颜色)
+1.3 关联性分析
+卡方检验：两个分类变量的关联分析，要求样本量足够大，样本过小可能出现错误
+判断核心：看频数和期望是否一致
+#性别与存活率列联表
+d = df[['PassengerId', 'Sex', 'Survived']].groupby['Sex', 'Survived'].count()
+print(d)
+
+from scipy import stats
+#卡方检验
+stats.chisquare(d)
+#p值显著性水平小于0.05
+
 2.分类 x 连续
 3.连续 x 连续
