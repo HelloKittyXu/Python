@@ -48,6 +48,7 @@ Python 和 Numpy 都自带mean函数，numpy的mean()处理大型数据计算速
 #画柱状图
 绘图：
 sns.barplot ( x = 表名['字段名1'] , y = 表名['字段名2'] , ci = n)
+sns.barplot (data = 数据集, x = 表名['字段名1'] , hue = 表名['字段名2'] #次级分类变量, y = 表名['字段名2'] , ci = n)
 标签：
 plt.rcParams ['字体'] = ['黑体']
 plt.rcParams['font.sans-serif'] = ['SimHei']
@@ -71,4 +72,3 @@ plt.show()
 #画相关系数热力图
 绘图：
 赋值新表名 = sns.heatmap ( 表名, square = True(形状判断), vmax = 1(颜色取值) ) #square 是否方形; vmax max取值
-
