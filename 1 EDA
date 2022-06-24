@@ -153,5 +153,17 @@ from scipy import stats
 stats.chisquare(d)
 #p值显著性水平小于0.05
 
+1.4 分布情况
+基于barplot观察不同分类类别下变量的分布差异
+sns.barplot(data = df , x = 'Sex' #按x分组, hue = '' #次级分类变量 , y = 'Fare' #对y做统计, estimator = np.mean #支持多种统计量，默认为均值)
+基于堆叠kdeplot、distplot不同分类类别下变量的分布差异
+#kdeplot
+df2 = df.loc[df['Fare'] <= 100]
+male = sns.kdeplot(df2.loc[df2['Sex'] == 'male'].Fare, color = 'b', label = '男性')
+female = sns.kdeplot(df2.loc[df2['Sex'] == 'female'].Fare, color = 'r', label = '女性')
+#distplot
+male = sns.distplot(df2.loc[df2['Sex'] == 'male'].Fare, his_kws = { 'linewidth' : 2, 'alpha' : 0.7, 'color' : 'b'} #设置格式 , kde_kws = {'label' : '男性'} #设置图例)
+female = sns.distplot(df2.loc[df2['Sex'] == 'female'].Fare, his_kws = { 'linewidth' : 2, 'alpha' : 0.7, 'color' : 'r'} #设置格式 , kde_kws = {'label' : '女性'} #设置图例)
+
 2.分类 x 连续
 3.连续 x 连续
