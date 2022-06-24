@@ -184,6 +184,46 @@ female_fare = df2.loc[df2['Sex'] == 'female'].Fare
 t_stats, p_value = stats.ttest_ind(male_fare, female_fare)
 print('P value is %.10f%' %(p_value)) #双边检验
 
+1.6 方差分析
+多个类别分类变量——方差分析（ANOVA）
+核心思想：总误差 = 组内误差 + 组间误差
+前提条件：（1）每个总体都服从正态分布（2）总体方差相同（3）观测值独立
+需要做：（1）正态性检验（2）方差齐性检验
+1.6.1 正态性检验
+#绘制直方图
+plt.figure(figsize = (12,8))
+plt.subplot(221)
+df2.loc[df2[' '] == ''].Avg_price.hist()
+#kstest 是一个很强大的检验模块，除了正态性检验
+#还能检验 scipy.stats 中的其他数据类型分布
+from scipy import stats
+c1 = df2.loc[df2[' '] == ''].SalePrice
+c2 = df2.loc[df2[' '] == ''].SalePrice
+c3 = df2.loc[df2[' '] == ''].SalePrice
+#标准化
+normed_c1 = (c1 - c1.mean())/c1.std()
+normed_c2 = (c2 - c2.mean())/c2.std()
+normed_c3 = (c3 - c3.mean())/c3.std()
+print(stats.kstest(normed_c1, 'norm'))
+print(stats.kstest(normed_c2, 'norm'))
+print(stats.kstest(normed_c3, 'norm'))
+#结果返回两个值：statistic —> D值，pvalue —> P值
+#p值>0.05，可以认为服从正态分布
+
+1.6.2 方差齐性检验
+#方差齐性检验（莱文检验，levene）
+import scipy
+scipy.stats.levene(c1, c2, c3)
+#检验结果p>0.05，所以可以认为方差是相等的
+
+#单因素方差分析
+from statsmodels.formula.api import ols
+from statsmodels.stats.anova import anova_lm
+#不同社区（Neighborhood）
+formula = 'Avg_price-Neighborhood'
+anova_results = anova_lm(ols(formula, df2).fit())
+print(anova_results)
+#p值<0.05，可以拒绝原假设（不同社区对房价没有影响），可以认为社区对售价有显著影响
+
 2.分类 x 连续
 3.连续 x 连续
-
