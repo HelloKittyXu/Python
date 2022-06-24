@@ -138,25 +138,26 @@ g1.count()
 pd.pivot_table(df, index = 'key1', columns = 'key2', aggfunc = )
 #基于crosstab
 pd.crosstab(df.sex, df.survived, margins = True)
+
 1.2 热力图 #多x多
 x = pd.crosstab(df.Type, df.Size)
 sns.heatmap(x, annot = True #显示数据标签, fmt = '.0f' #数据格式, #mask = x.values < 200 覆盖小于200的区域, cmap = 'Blues' #设定颜色)
+
 1.3 关联性分析
 卡方检验：两个分类变量的关联分析，要求样本量足够大，样本过小可能出现错误
 判断核心：看频数和期望是否一致
 #性别与存活率列联表
 d = df[['PassengerId', 'Sex', 'Survived']].groupby['Sex', 'Survived'].count()
 print(d)
-
 from scipy import stats
 #卡方检验
 stats.chisquare(d)
 #p值显著性水平小于0.05
 
 1.4 分布情况
-基于barplot观察不同分类类别下变量的分布差异
+1.4.1 基于barplot观察不同分类类别下变量的分布差异
 sns.barplot(data = df , x = 'Sex' #按x分组, hue = '' #次级分类变量 , y = 'Fare' #对y做统计, estimator = np.mean #支持多种统计量，默认为均值)
-基于堆叠kdeplot、distplot不同分类类别下变量的分布差异
+1.4.2 基于堆叠kdeplot、distplot不同分类类别下变量的分布差异
 #kdeplot
 df2 = df.loc[df['Fare'] <= 100]
 male = sns.kdeplot(df2.loc[df2['Sex'] == 'male'].Fare, color = 'b', label = '男性')
@@ -164,6 +165,25 @@ female = sns.kdeplot(df2.loc[df2['Sex'] == 'female'].Fare, color = 'r', label = 
 #distplot
 male = sns.distplot(df2.loc[df2['Sex'] == 'male'].Fare, his_kws = { 'linewidth' : 2, 'alpha' : 0.7, 'color' : 'b'} #设置格式 , kde_kws = {'label' : '男性'} #设置图例)
 female = sns.distplot(df2.loc[df2['Sex'] == 'female'].Fare, his_kws = { 'linewidth' : 2, 'alpha' : 0.7, 'color' : 'r'} #设置格式 , kde_kws = {'label' : '女性'} #设置图例)
+1.4.3 基于violinplot不同分类类别下变量的分布差异
+箱线图中所有绘图组件都对应于实际数据点，小提琴绘图以基础分布的核密度估计为特征
+#与boxplot类似
+sns.violinplot(data = df2, x = 'Sex', y = 'Fare', hue = 'Pclass' #次级分类变量)
+
+1.5 均值检验
+对两个类别分类变量进行Z检验、T检验（均值）
+如何选择T检验、Z检验：
+(1) 样本量大：T检验 or Z检验 都可，大样本情况下，两者结果近似
+(2) 样本量小：
+总体已知方差 Z检验
+总体未知方差 T检验
+#假设男性、女性花费相同
+male_fare = df2.loc[df2['Sex'] == 'male'].Fare
+female_fare = df2.loc[df2['Sex'] == 'female'].Fare
+#用ttest_ind做T检验，要求输入原始样本数据
+t_stats, p_value = stats.ttest_ind(male_fare, female_fare)
+print('P value is %.10f%' %(p_value)) #双边检验
 
 2.分类 x 连续
 3.连续 x 连续
+
