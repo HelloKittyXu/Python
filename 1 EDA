@@ -262,3 +262,4 @@ sns.heatmap(df.corr(), annot = True #显示数据标签, fmt = '.2f' #数据格�
 Link：
 https://github.com/ResidentMario/missingno#quickstart
 https://github.com/ydataai/pandas-profiling
+https://seaborn.pydata.org/tutorial/distributions.html
