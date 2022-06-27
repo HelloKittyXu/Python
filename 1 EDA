@@ -154,10 +154,11 @@ from scipy import stats
 stats.chisquare(d)
 #p值显著性水平小于0.05
 
-1.4 分布情况
-1.4.1 基于barplot观察不同分类类别下变量的分布差异
+2.分类 x 连续
+2.1 分布情况
+2.1.1 基于barplot观察不同分类类别下变量的分布差异
 sns.barplot(data = df , x = 'Sex' #按x分组, hue = '' #次级分类变量 , y = 'Fare' #对y做统计, estimator = np.mean #支持多种统计量，默认为均值)
-1.4.2 基于堆叠kdeplot、distplot不同分类类别下变量的分布差异
+2.1.2 基于堆叠kdeplot、distplot不同分类类别下变量的分布差异
 #kdeplot
 df2 = df.loc[df['Fare'] <= 100]
 male = sns.kdeplot(df2.loc[df2['Sex'] == 'male'].Fare, color = 'b', label = '男性')
@@ -165,12 +166,12 @@ female = sns.kdeplot(df2.loc[df2['Sex'] == 'female'].Fare, color = 'r', label = 
 #distplot
 male = sns.distplot(df2.loc[df2['Sex'] == 'male'].Fare, his_kws = { 'linewidth' : 2, 'alpha' : 0.7, 'color' : 'b'} #设置格式 , kde_kws = {'label' : '男性'} #设置图例)
 female = sns.distplot(df2.loc[df2['Sex'] == 'female'].Fare, his_kws = { 'linewidth' : 2, 'alpha' : 0.7, 'color' : 'r'} #设置格式 , kde_kws = {'label' : '女性'} #设置图例)
-1.4.3 基于violinplot不同分类类别下变量的分布差异
+2.1.3 基于violinplot不同分类类别下变量的分布差异
 箱线图中所有绘图组件都对应于实际数据点，小提琴绘图以基础分布的核密度估计为特征
 #与boxplot类似
 sns.violinplot(data = df2, x = 'Sex', y = 'Fare', hue = 'Pclass' #次级分类变量)
 
-1.5 均值检验
+2.2 均值检验
 对两个类别分类变量进行Z检验、T检验（均值）
 如何选择T检验、Z检验：
 (1) 样本量大：T检验 or Z检验 都可，大样本情况下，两者结果近似
@@ -184,12 +185,12 @@ female_fare = df2.loc[df2['Sex'] == 'female'].Fare
 t_stats, p_value = stats.ttest_ind(male_fare, female_fare)
 print('P value is %.10f%' %(p_value)) #双边检验
 
-1.6 方差分析
+2.3 方差分析
 多个类别分类变量——方差分析（ANOVA）
 核心思想：总误差 = 组内误差 + 组间误差
 前提条件：（1）每个总体都服从正态分布（2）总体方差相同（3）观测值独立
 需要做：（1）正态性检验（2）方差齐性检验
-1.6.1 正态性检验
+2.3.1 正态性检验
 #绘制直方图
 plt.figure(figsize = (12,8))
 plt.subplot(221)
@@ -210,7 +211,7 @@ print(stats.kstest(normed_c3, 'norm'))
 #结果返回两个值：statistic —> D值，pvalue —> P值
 #p值>0.05，可以认为服从正态分布
 
-1.6.2 方差齐性检验
+2.3.2 方差齐性检验
 #方差齐性检验（莱文检验，levene）
 import scipy
 scipy.stats.levene(c1, c2, c3)
@@ -225,5 +226,38 @@ anova_results = anova_lm(ols(formula, df2).fit())
 print(anova_results)
 #p值<0.05，可以拒绝原假设（不同社区对房价没有影响），可以认为社区对售价有显著影响
 
-2.分类 x 连续
 3.连续 x 连续
+3.1 图
+3.1.1 散点图：看2个连续变量的趋势，发现潜在规律
+sns.scatterplot(date = df3, x = '', y = '', hue = '' #分组)
+3.1.2 jointplot
+sns.jointplot(date = df3, x = '', y = '', hue = '' #分组)
+3.1.3 pairplot
+一键生成，快速画出各个特征的分布
+iris = sns.load_dataset('iris')
+g = sns.pairplot(iris)
+
+3.2 相关系数
+3.2.1 线性相关
+Pearson相关系数：两个变量x、y之间协方差和标准差的比值
+from scipy.stats import pearsonr
+x = df3['SalePrice'] #房价
+y = df3['GrLivArea'] #居住面积
+#计算pearson相关系数
+r_row, p_value = pearsonr(x, y)
+print(r_row.round(3)) #pearson相关系数
+print(p_value.round(3)) #p值
+3.2.1 非线性相关
+Spearman（等级）相关系数：两个变量x、y之间的单调函数；使用广泛，只要成对出现、可排序就行
+p = 1 - (6 Sigma d^2)/(n * (n^2 - 1))
+from scipy.stats import spearmanr
+r_row, p_value = spearmanr(x, y)
+print(r_row.round(3)) #spearman相关系数
+print(p_value.round(3)) #p值
+
+3.3 热力图
+对相关系数矩阵绘制热力图，看变量间相关性强弱关系
+sns.heatmap(df.corr(), annot = True #显示数据标签, fmt = '.2f' #数据格式, #mask = x.values < 200 覆盖小于200的区域, cmap = 'Blues' #设定颜色)
+
+Link：
+https://github.com/ResidentMario/missingno#quickstart
